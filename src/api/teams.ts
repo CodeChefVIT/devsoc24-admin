@@ -63,6 +63,7 @@ export const addReview = async (
   comments: string,
 ) => {
   try {
+    await refresh();
     await axios.post<APIResponse>(
       `${process.env.NEXT_PUBLIC_API_URL}/admin/review`,
       {
