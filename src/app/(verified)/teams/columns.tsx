@@ -63,7 +63,7 @@ export const columns: ColumnDef<Team>[] = [
     ),
     filterFn: (row, id, filterValue) => {
       const file = row.original.team_name.toLowerCase();
-      return file.includes(filterValue as string);
+      return file.includes((filterValue as string).toLowerCase());
     },
     sortingFn: (rowA, rowB) => {
       const valueA = rowA.original.team_name;
@@ -106,7 +106,7 @@ export const columns: ColumnDef<Team>[] = [
     ),
     filterFn: (row, id, filterValue) => {
       const file = row.original.team_code.toLowerCase();
-      return file.includes(filterValue as string);
+      return file.includes((filterValue as string).toLowerCase());
     },
     sortingFn: (rowA, rowB) => {
       const valueA = rowA.original.team_code;
