@@ -33,6 +33,11 @@ export interface User {
   country: string;
   gender: string;
   role: string;
+  is_banned: boolean;
+  is_added: boolean;
+  is_vitian: boolean;
+  is_verified: boolean;
+  is_profile_complete: boolean;
   is_leader: boolean;
   team_id: string;
   vit_email?: string;

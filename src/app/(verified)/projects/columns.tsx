@@ -26,27 +26,20 @@ import { EyeIcon } from "lucide-react";
 export const columns: ColumnDef<Project>[] = [
   {
     id: "select",
-    header: ({ table }) => {
+    header: ({ column }) => {
       return (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected()}
-          onCheckedChange={(value: boolean) =>
-            table.toggleAllPageRowsSelected(!!value)
-          }
-          aria-label="Select all"
-          className="translate-y-[2px]"
+        <DataTableColumnHeader
+          title="Sr. No."
+          className="text-center text-sm font-semibold text-foreground"
+          column={column}
         />
       );
     },
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
+      <div className="whitespace-nowrap text-sm font-medium text-muted-foreground">
+        {row.index + 1}
+      </div>
     ),
-    enableSorting: false,
     enableHiding: false,
   },
   {

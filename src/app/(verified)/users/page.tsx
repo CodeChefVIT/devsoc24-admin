@@ -11,8 +11,11 @@ export default function Page() {
 
   useEffect(() => {
     async function fetchData() {
-      const temp = await getAllUsers();
-      if (temp) setData(temp);
+      let temp = await getAllUsers();
+      if (temp) {
+        temp = temp.filter((user) => user.is_profile_complete === true);
+        setData(temp);
+      }
     }
     void fetchData();
   }, []);

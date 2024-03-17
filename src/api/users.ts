@@ -51,3 +51,53 @@ export const getUser = async (id: string) => {
     }
   }
 };
+
+export const banUser = async (email: string) => {
+  try {
+    await axios.post<UserResponse>(
+      `${process.env.NEXT_PUBLIC_API_URL}/admin/user/ban`,
+      { email },
+      {
+        withCredentials: true,
+      },
+    );
+  } catch (e) {
+    if (axios.isAxiosError(e)) {
+      switch (e.response?.status) {
+        case 401:
+          try {
+            await refresh();
+          } catch (e) {
+            // console.log("REFESH: ", e);
+          }
+        default:
+        // console.log(e);
+      }
+    }
+  }
+};
+
+export const unbanUser = async (email: string) => {
+  try {
+    await axios.post<UserResponse>(
+      `${process.env.NEXT_PUBLIC_API_URL}/admin/user/unban`,
+      { email },
+      {
+        withCredentials: true,
+      },
+    );
+  } catch (e) {
+    if (axios.isAxiosError(e)) {
+      switch (e.response?.status) {
+        case 401:
+          try {
+            await refresh();
+          } catch (e) {
+            // console.log("REFESH: ", e);
+          }
+        default:
+        // console.log(e);
+      }
+    }
+  }
+};

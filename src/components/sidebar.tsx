@@ -68,7 +68,7 @@ export default function Sidebar() {
               alt=""
               height={40}
               width={40}
-              className="h-10 w-10 cursor-pointer"
+              className="cursor-pointer h-10 w-10"
             />
           </div>
         </Link>

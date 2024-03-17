@@ -1,93 +1,76 @@
 "use client";
 
 import { getTeam } from "@/api/teams";
-import { getUser } from "@/api/users";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { type Team, type User } from "@/schemas/api";
+import { type Team } from "@/schemas/api";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 export default function Page() {
   const searchParams = useSearchParams();
-  const email = searchParams.get("id");
-  const [userData, setUserData] = useState<User>();
+  const id = searchParams.get("id");
   const [teamData, setTeamData] = useState<Team>();
 
   useEffect(() => {
     async function fetchData() {
-      if (!email) return;
-      const temp = await getUser(email);
-      if (temp) setUserData(temp);
-      if (!temp?.team_id) return;
-      const temp2 = await getTeam(temp?.team_id);
-      if (temp2) setTeamData(temp2);
-      console.log(temp2);
+      if (!id) return;
+      const temp = await getTeam(id);
+      if (temp) setTeamData(temp);
     }
     void fetchData();
-  }, [email]);
+  }, [id]);
 
   return (
     <main className="ml-[70px] flex h-screen flex-col">
       <Link href="/teams" className="ml-4 mt-3 font-medium text-primary">
         {"< Back"}
       </Link>
-      <Card className="mx-4 mt-5 h-1/3 overflow-auto">
-        <CardHeader className="flex-row gap-5 text-xl font-semibold">
-          <p>{userData?.first_name + " " + userData?.last_name}</p>
-          <p className="space-y-0 text-base text-muted-foreground">
-            {userData?.vit_email}
-          </p>
-        </CardHeader>
-        <CardContent className="-mt-4 flex flex-col">
-          <p className="text-muted-foreground">Personal Detais:</p>
-          <div className="flex gap-10">
-            <div className="flex">
-              <p className="mr-1 font-medium">Reg No.:</p>
-              <p>{userData?.reg_no}</p>
-            </div>
-            <div className="flex text-wrap">
-              <p className="mr-1 font-medium">Email:</p>
-              <p className="text-wrap">{userData?.email}</p>
-            </div>
-            <div className="flex">
-              <p className="mr-1 font-medium">Phone:</p>
-              <p>{userData?.phone_number}</p>
-            </div>
-          </div>
-          <p className="mt-4 text-muted-foreground">College Detais:</p>
-          <div className="flex gap-10">
-            <div className="flex">
-              <p className="mr-1 font-medium">College:</p>
-              <p>{userData?.college}</p>
-            </div>
-            <div className="flex text-wrap">
-              <p className="mr-1 font-medium">City:</p>
-              <p className="text-wrap">{userData?.city}</p>
-            </div>
-            <div className="flex">
-              <p className="mr-1 font-medium">State:</p>
-              <p>{userData?.state}</p>
-            </div>
-            <div className="flex">
-              <p className="mr-1 font-medium">Country:</p>
-              <p>{userData?.country}</p>
-            </div>
-          </div>
-          <p className="mt-4 text-muted-foreground">Hostel Detais:</p>
-          <div className="flex gap-10">
-            <div className="flex">
-              <p className="mr-1 font-medium">Block:</p>
-              <p>{userData?.block}</p>
-            </div>
-            <div className="flex">
-              <p className="mr-1 font-medium">Room:</p>
-              <p>{userData?.room}</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <Carousel
+        opts={{
+          align: "start",
+        }}
+        className="w-full "
+      >
+        <CarouselContent>
+          {teamData?.users.map((userData, id) => (
+            <CarouselItem
+              key={id}
+              className={`basis-[calc(100/${teamData.users.length})%]`}
+            >
+              <Card className="mx-4 mt-5 h-fit overflow-auto">
+                <CardHeader className="flex-row gap-5 text-xl font-semibold">
+                  <p>{userData?.name}</p>
+                </CardHeader>
+                <CardContent className="-mt-4 flex flex-col">
+                  <p className="text-muted-foreground">Personal Detais:</p>
+                  <div className="flex gap-10">
+                    <div className="flex">
+                      <p className="mr-1 font-medium">Reg No.:</p>
+                      <p>{userData?.reg_no}</p>
+                    </div>
+                    <div className="flex text-wrap">
+                      <p className="mr-1 font-medium">Email:</p>
+                      <p className="text-wrap">{userData?.email}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselNext />
+        <CarouselPrevious />
+      </Carousel>
+
       <div className="flex grow flex-col md:flex-row">
         <Card className="mx-4 mt-10 h-4/5 w-1/2 overflow-auto">
           <CardHeader className="text-xl font-semibold">

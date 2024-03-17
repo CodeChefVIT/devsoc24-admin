@@ -1,6 +1,5 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Tooltip,
   TooltipContent,
@@ -13,31 +12,25 @@ import { type User } from "@/schemas/api";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { BanIcon, EyeIcon } from "lucide-react";
+import { banUser, unbanUser } from "@/api/users";
 
 export const columns: ColumnDef<User>[] = [
   {
     id: "select",
-    header: ({ table }) => {
+    header: ({ column }) => {
       return (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected()}
-          onCheckedChange={(value: boolean) =>
-            table.toggleAllPageRowsSelected(!!value)
-          }
-          aria-label="Select all"
-          className="translate-y-[2px]"
+        <DataTableColumnHeader
+          title="Sr. No."
+          className="text-center text-sm font-semibold text-foreground"
+          column={column}
         />
       );
     },
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
+      <div className="whitespace-nowrap text-sm font-medium text-muted-foreground">
+        {row.index + 1}
+      </div>
     ),
-    enableSorting: false,
     enableHiding: false,
   },
   {
@@ -264,44 +257,6 @@ export const columns: ColumnDef<User>[] = [
     },
   },
   {
-    id: "In Team",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="In Team"
-        className="text-center text-sm font-semibold text-foreground"
-      />
-    ),
-    cell: ({ row }) => (
-      <div className="whitespace-nowrap text-sm font-medium text-muted-foreground">
-        {row.original.team_id !== "00000000-0000-0000-0000-000000000000"
-          ? "Yes"
-          : "No"}
-      </div>
-    ),
-    filterFn: (row, id, filterValue) => {
-      const file = row.original.team_id;
-      return file.includes(filterValue as string);
-    }
-  },
-  {
-    id: "Idea Submitted",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Idea submitted"
-        className="text-center text-sm font-semibold text-foreground"
-      />
-    ),
-    cell: ({ row }) => (
-      <div className="whitespace-nowrap text-sm font-medium text-muted-foreground">
-        {row.original.team_id !== "00000000-0000-0000-0000-000000000000"
-          ? "Yes"
-          : "No"}
-      </div>
-    ),
-  },
-  {
     id: "action",
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -331,12 +286,19 @@ export const columns: ColumnDef<User>[] = [
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="ghost">
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    row.original.is_banned
+                      ? void unbanUser(row.original.email)
+                      : void banUser(row.original.email);
+                  }}
+                >
                   <BanIcon size={20} color="#a30d11" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Ban User</p>
+                <p>{row.original.is_banned ? "Unban User" : "Ban User"}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

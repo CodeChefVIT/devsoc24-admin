@@ -1,6 +1,5 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Tooltip,
   TooltipContent,
@@ -19,13 +18,12 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
 
-import { EyeIcon } from "lucide-react";
-import { Router } from "next/router";
+import { EyeIcon, UsersIcon } from "lucide-react";
+import Link from "next/link";
 
 async function shortlistIdea(id: string) {
   try {
@@ -48,8 +46,7 @@ async function shortlistIdea(id: string) {
           try {
             await refresh();
             toast.error("Please try again.");
-          } catch (e) {
-          }
+          } catch (e) {}
         default:
         // console.log(e);
       }
@@ -60,27 +57,20 @@ async function shortlistIdea(id: string) {
 export const columns: ColumnDef<Idea>[] = [
   {
     id: "select",
-    header: ({ table }) => {
+    header: ({ column }) => {
       return (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected()}
-          onCheckedChange={(value: boolean) =>
-            table.toggleAllPageRowsSelected(!!value)
-          }
-          aria-label="Select all"
-          className="translate-y-[2px]"
+        <DataTableColumnHeader
+          title="Sr. No."
+          className="text-center text-sm font-semibold text-foreground"
+          column={column}
         />
       );
     },
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value: boolean) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="translate-y-[2px]"
-      />
+      <div className="whitespace-nowrap text-sm font-medium text-muted-foreground">
+        {row.index + 1}
+      </div>
     ),
-    enableSorting: false,
     enableHiding: false,
   },
   {
@@ -114,7 +104,7 @@ export const columns: ColumnDef<Idea>[] = [
     ),
     filterFn: (row, id, filterValue) => {
       const file = row.original.title.toLowerCase();
-      return file.includes(filterValue as string);
+      return file.includes((filterValue as string).toLowerCase());
     },
     sortingFn: (rowA, rowB) => {
       const valueA = rowA.original.title;
@@ -157,7 +147,7 @@ export const columns: ColumnDef<Idea>[] = [
     ),
     filterFn: (row, id, filterValue) => {
       const file = row.original.track.toLowerCase();
-      return file.includes(filterValue as string);
+      return file.includes((filterValue as string).toLowerCase());
     },
     sortingFn: (rowA, rowB) => {
       const valueA = rowA.original.track;
@@ -296,6 +286,21 @@ export const columns: ColumnDef<Idea>[] = [
               </DialogClose>
             </DialogContent>
           </Dialog>
+
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost">
+                  <Link href={`./team?id=${row.original.team_id}`}>
+                    <UsersIcon size={23} />
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>View</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       );
     },
