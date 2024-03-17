@@ -47,6 +47,7 @@ async function shortlistIdea(id: string) {
         case 401:
           try {
             await refresh();
+            toast.error("Please try again.");
           } catch (e) {
           }
         default:
