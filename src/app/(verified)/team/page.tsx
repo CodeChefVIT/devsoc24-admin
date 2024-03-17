@@ -310,7 +310,8 @@ export default function Page() {
             <TabsContent value="reviews" className="p-2">
               {reviews?.map((review, id) => (
                 <div key={id}>
-                  <p>Review {id + 1}</p>
+                  <p className="text-xl font-bold">Review {id + 1}</p>
+                  <p>Round {review.review_round}</p>
                   <div className="flex">
                     <p className="text-muted-foreground">
                       Innovation & Creativity:
@@ -346,6 +347,10 @@ export default function Page() {
                     <p className="ml-1 font-medium">
                       {review.presentation_and_communication}
                     </p>
+                  </div>
+                  <div className="mt-1 flex">
+                    <p className="text-muted-foreground">Review by:</p>
+                    <p className="ml-1 font-medium">{review.reviewer}</p>
                   </div>
                   <p className="text-muted-foreground">Comments:</p>
                   <p className="font-medium">{review.comments}</p>
