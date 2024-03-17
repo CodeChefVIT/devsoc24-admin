@@ -156,6 +156,10 @@ export const columns: ColumnDef<User>[] = [
       }
       return 0;
     },
+    filterFn: (row, id, filterValue) => {
+      const file = row.original.reg_no.toLowerCase();
+      return file.includes((filterValue as string).toLowerCase());
+    },
   },
   {
     accessorKey: "Email",
@@ -258,6 +262,44 @@ export const columns: ColumnDef<User>[] = [
       }
       return 0;
     },
+  },
+  {
+    id: "In Team",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="In Team"
+        className="text-center text-sm font-semibold text-foreground"
+      />
+    ),
+    cell: ({ row }) => (
+      <div className="whitespace-nowrap text-sm font-medium text-muted-foreground">
+        {row.original.team_id !== "00000000-0000-0000-0000-000000000000"
+          ? "Yes"
+          : "No"}
+      </div>
+    ),
+    filterFn: (row, id, filterValue) => {
+      const file = row.original.team_id;
+      return file.includes(filterValue as string);
+    }
+  },
+  {
+    id: "Idea Submitted",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Idea submitted"
+        className="text-center text-sm font-semibold text-foreground"
+      />
+    ),
+    cell: ({ row }) => (
+      <div className="whitespace-nowrap text-sm font-medium text-muted-foreground">
+        {row.original.team_id !== "00000000-0000-0000-0000-000000000000"
+          ? "Yes"
+          : "No"}
+      </div>
+    ),
   },
   {
     id: "action",

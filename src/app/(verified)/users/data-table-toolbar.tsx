@@ -27,6 +27,8 @@ export function DataTableToolbarUsers<TData>({
 
   const [filter, setFilter] = useState("Email");
   const [femaleOnly, setFemaleOnly] = useState(false);
+  const [fresherOnly, setFresherOnly] = useState(false);
+  const [inTeam, setInTeam] = useState(false);
 
   useEffect(() => {
     if (femaleOnly) {
@@ -35,6 +37,24 @@ export function DataTableToolbarUsers<TData>({
       table.getColumn("Gender")?.setFilterValue("");
     }
   }, [femaleOnly, table]);
+
+  useEffect(() => {
+    if (fresherOnly) {
+      table.getColumn("Reg No")?.setFilterValue("23");
+    } else {
+      table.getColumn("Reg No")?.setFilterValue("");
+    }
+  }, [fresherOnly, table]);
+
+  useEffect(() => {
+    if (inTeam) {
+      table
+        .getColumn("In Team")
+        ?.setFilterValue("00000000-0000-0000-0000-000000000000");
+    } else {
+      table.getColumn("In Team")?.setFilterValue("");
+    }
+  }, [inTeam, table]);
 
   return (
     <div className="flex flex-col items-start justify-between gap-2 rounded-lg bg-[#f9fafb] px-3 py-4 shadow-md md:flex-row md:items-center">
@@ -87,6 +107,21 @@ export function DataTableToolbarUsers<TData>({
           onClick={() => setFemaleOnly(!femaleOnly)}
         >
           {femaleOnly && <CheckIcon size={20} className="mr-2" />} Females Only
+        </Button>
+        <Button
+          variant={fresherOnly ? "secondary" : "outline"}
+          className="ml-auto flex"
+          onClick={() => setFresherOnly(!femaleOnly)}
+        >
+          {fresherOnly && <CheckIcon size={20} className="mr-2" />} Freshers
+          Only
+        </Button>
+        <Button
+          variant={inTeam ? "secondary" : "outline"}
+          className="ml-auto flex"
+          onClick={() => setInTeam(!inTeam)}
+        >
+          {inTeam && <CheckIcon size={20} className="mr-2" />}Not In Team
         </Button>
       </div>
     </div>
