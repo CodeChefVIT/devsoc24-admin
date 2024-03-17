@@ -58,6 +58,7 @@ export interface Team {
 }
 
 export interface Idea {
+  team_id: string;
   title: string;
   description: string;
   track: string;
