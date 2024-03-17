@@ -20,21 +20,13 @@ interface DataTableToolbarProps<TData> {
   table: Table<TData>;
 }
 
-export function DataTableToolbarUsers<TData>({
+export function DataTableToolbarTeams<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
-  const [filter, setFilter] = useState("Email");
-  const [femaleOnly, setFemaleOnly] = useState(false);
+  const [filter, setFilter] = useState("Team Name");
 
-  useEffect(() => {
-    if (femaleOnly) {
-      table.getColumn("Gender")?.setFilterValue("Female");
-    } else {
-      table.getColumn("Gender")?.setFilterValue("");
-    }
-  }, [femaleOnly, table]);
 
   return (
     <div className="flex flex-col items-start justify-between gap-2 rounded-lg bg-[#f9fafb] px-3 py-4 shadow-md md:flex-row md:items-center">
@@ -49,11 +41,9 @@ export function DataTableToolbarUsers<TData>({
             </SelectTrigger>
             <SelectContent side="top">
               {[
-                "First Name",
-                "Last Name",
-                "Email",
-                "Reg No",
-                "Phone Number",
+                "Team Name",
+                "Team Code",
+                "Round",
               ].map((filterVal) => (
                 <SelectItem key={filterVal} value={`${filterVal}`}>
                   {filterVal}
@@ -81,13 +71,6 @@ export function DataTableToolbarUsers<TData>({
           )}
         </div>
         <DataTableViewOptions table={table} />
-        <Button
-          variant={femaleOnly ? "secondary" : "outline"}
-          className="ml-auto flex"
-          onClick={() => setFemaleOnly(!femaleOnly)}
-        >
-          {femaleOnly && <CheckIcon size={20} className="mr-2" />} Females Only
-        </Button>
       </div>
     </div>
   );

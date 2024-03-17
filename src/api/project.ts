@@ -1,16 +1,16 @@
 import axios from "axios";
 import { refresh } from "./auth";
-import { type APIResponse, type Team } from "@/schemas/api";
+import { type APIResponse, type Project } from "@/schemas/api";
 
-export const getAllTeams = async () => {
+export const getAllProjects = async () => {
   try {
     const { data } = await axios.get<APIResponse>(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/team/all`,
+      `${process.env.NEXT_PUBLIC_API_URL}/admin/projects/all`,
       {
         withCredentials: true,
       },
     );
-    return data.data as Team[];
+    return data.data as Project[];
   } catch (e) {
     if (axios.isAxiosError(e)) {
       switch (e.response?.status) {
@@ -27,15 +27,15 @@ export const getAllTeams = async () => {
   }
 };
 
-export const getTeam = async (id: string) => {
+export const getIdea = async (id: string) => {
   try {
     const { data } = await axios.get<APIResponse>(
-      `${process.env.NEXT_PUBLIC_API_URL}/admin/team/${id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/admin/teams/project/${id}`,
       {
         withCredentials: true,
       },
     );
-    return data.data as Team;
+    return data.data as Project;
   } catch (e) {
     if (axios.isAxiosError(e)) {
       switch (e.response?.status) {
