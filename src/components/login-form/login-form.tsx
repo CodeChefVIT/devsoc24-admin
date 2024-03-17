@@ -17,8 +17,9 @@ import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { EyeIcon, EyeOffIcon, LockKeyholeIcon, MailIcon } from "lucide-react";
-import axios, { type AxiosError } from "axios";
+import { type AxiosError } from "axios";
 import ToastContainer from "@/components/toast-container";
+import { login } from "@/api/auth";
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
@@ -34,26 +35,9 @@ export default function LoginForm() {
     },
     mode: "onChange",
   });
-  interface APIResponse {
-    message: string;
-    status: string;
-    data?: {
-      profile_complete: boolean;
-    };
-  }
 
   async function onSubmit(formVal: LoginFormValues) {
-    const submitForm = async () => {
-      await axios.post<APIResponse>(
-        `${process.env.NEXT_PUBLIC_API_URL}/login`,
-        { email: formVal.email, password: formVal.password },
-        {
-          withCredentials: true,
-        },
-      );
-    };
-
-    void toast.promise(submitForm(), {
+    void toast.promise(login(formVal.email, formVal.password), {
       loading: "Cooking...",
       success: () => {
         void router.push("/home");
