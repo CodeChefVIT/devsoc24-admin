@@ -7,9 +7,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import axios from "axios";
+import { refresh } from "@/api/auth";
+import toast from "react-hot-toast";
 import { type ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../../../components/data-table/data-table-column-header";
-import { type Idea } from "@/schemas/api";
+import { type APIResponse, type Idea } from "@/schemas/api";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,9 +21,41 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 
 import { EyeIcon } from "lucide-react";
+import { Router } from "next/router";
+
+async function shortlistIdea(id: string) {
+  try {
+    const response = await axios.post<APIResponse>(
+      `${process.env.NEXT_PUBLIC_API_URL}/admin/idea/shortlist`,
+      {
+        team_id: id,
+      },
+      {
+        withCredentials: true,
+      },
+    );
+    if (response.data.status === "success") {
+      toast.success("Idea shortlisted successfully");
+    }
+  } catch (e) {
+    if (axios.isAxiosError(e)) {
+      switch (e.response?.status) {
+        case 401:
+          try {
+            await refresh();
+            toast.error("Please try again.");
+          } catch (e) {
+          }
+        default:
+        // console.log(e);
+      }
+    }
+  }
+}
 
 export const columns: ColumnDef<Idea>[] = [
   {
@@ -250,12 +285,15 @@ export const columns: ColumnDef<Idea>[] = [
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Are you absolutely sure?</DialogTitle>
                 <DialogDescription>
                   {row.original.description}
                 </DialogDescription>
               </DialogHeader>
-              <Button>Shortlist</Button>
+              <DialogClose>
+                <Button onClick={() => shortlistIdea(row.original.team_id)}>
+                  Shortlist
+                </Button>
+              </DialogClose>
             </DialogContent>
           </Dialog>
         </div>
