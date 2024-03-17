@@ -145,6 +145,10 @@ export const columns: ColumnDef<Team>[] = [
       }
       return 0;
     },
+    filterFn: (row, id, filterValue) => {
+      const file = row.original.round;
+      return file == (filterValue as number);
+    },
   },
   {
     id: "action",
@@ -157,12 +161,12 @@ export const columns: ColumnDef<Team>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="mt-2 flex items-center justify-between text-muted-foreground">
+        <div className="mt-2 flex items-center justify-center text-muted-foreground">
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button variant="ghost">
-                  <Link href={`./team?id=${row.original.id}`}>
+                  <Link href={`/team?id=${row.original.id}`}>
                     <EyeIcon size={23} />
                   </Link>
                 </Button>
@@ -172,7 +176,6 @@ export const columns: ColumnDef<Team>[] = [
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>

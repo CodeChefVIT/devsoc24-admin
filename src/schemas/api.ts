@@ -50,7 +50,7 @@ export interface Team {
   team_name: string;
   team_code: string;
   leader_id: string;
-  round: 0;
+  round: number;
   users: {
     name: string;
     reg_no: string;
@@ -81,4 +81,17 @@ export interface Project {
   github_link: string;
   figma_link: string;
   others: string;
+}
+
+export interface Review {
+  id: string;
+  team_id: string;
+  reviewer: string;
+  innovation_and_creativity: number;
+  functionality_and_completeness: number;
+  ui_and_design: number;
+  techincal_implementation: number;
+  presentation_and_communication: number;
+  review_round: number;
+  comments: string;
 }

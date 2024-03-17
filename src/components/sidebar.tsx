@@ -37,7 +37,9 @@ const SidebarItem = ({
   // Webhook dummy commit
   <div
     className={`my-2 flex cursor-pointer items-center rounded-lg ${
-      path === `/${item.toLowerCase()}` ? "bg-purple-200" : "hover:bg-gray-200"
+      path.includes(`${item.toLowerCase().slice(0, -1)}`)
+        ? "bg-purple-200"
+        : "hover:bg-gray-200"
     }`}
     onClick={() => router.push(`/${item.toLowerCase()}`)}
   >
@@ -68,7 +70,7 @@ export default function Sidebar() {
               alt=""
               height={40}
               width={40}
-              className="cursor-pointer h-10 w-10"
+              className="h-10 w-10 cursor-pointer"
             />
           </div>
         </Link>
@@ -82,7 +84,7 @@ export default function Sidebar() {
                 size={25}
                 className="my-4 min-w-[45px]"
                 color={
-                  path === "/users"
+                  path.includes("user")
                     ? "hsl(var(--primary))"
                     : "hsl(var(--muted-foreground))"
                 }
@@ -98,7 +100,7 @@ export default function Sidebar() {
                 size={25}
                 className="my-4 min-w-[45px]"
                 color={
-                  path === "/teams"
+                  path.includes("team")
                     ? "hsl(var(--primary))"
                     : "hsl(var(--muted-foreground))"
                 }
@@ -114,7 +116,7 @@ export default function Sidebar() {
                 size={25}
                 className="my-4 min-w-[45px]"
                 color={
-                  path === "/ideas"
+                  path.includes("idea")
                     ? "hsl(var(--primary))"
                     : "hsl(var(--muted-foreground))"
                 }
@@ -130,7 +132,7 @@ export default function Sidebar() {
                 size={25}
                 className="my-4 min-w-[45px]"
                 color={
-                  path === "/projects"
+                  path.includes("project")
                     ? "hsl(var(--primary))"
                     : "hsl(var(--muted-foreground))"
                 }

@@ -1,8 +1,8 @@
 "use client";
 
-import { getTeam } from "@/api/teams";
+import { addReview, getReview, getTeam } from "@/api/teams";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { type Team } from "@/schemas/api";
+import { Review, type Team } from "@/schemas/api";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -14,26 +14,161 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const [teamData, setTeamData] = useState<Team>();
+  const [reviews, setReviews] = useState<Review[]>();
+  const [innovation, setInnovation] = useState<number>();
+  const [functionality, setFunctionality] = useState<number>();
+  const [design, setDesign] = useState<number>();
+  const [tech, setTeach] = useState<number>();
+  const [presentation, setPresentation] = useState<number>();
+  const [author, setAuthor] = useState<string>();
+  const [comments, setComments] = useState<string>();
 
   useEffect(() => {
     async function fetchData() {
       if (!id) return;
       const temp = await getTeam(id);
       if (temp) setTeamData(temp);
+      const temp2 = await getReview(id);
+      if (temp2) setReviews(temp2);
     }
     void fetchData();
   }, [id]);
 
+  const handleSubmit = async () => {
+    if (
+      !id ||
+      !author ||
+      !innovation ||
+      !functionality ||
+      !design ||
+      !tech ||
+      !presentation
+    ) {
+      toast.error("All fields are required!");
+      return;
+    }
+    void toast.promise(
+      addReview(
+        id,
+        author,
+        innovation,
+        functionality,
+        design,
+        tech,
+        presentation,
+        comments ?? "",
+      ),
+      {
+        loading: "Reviewing...",
+        success: "Review added successfully!",
+        error: "Something went wrong!",
+      },
+    );
+  };
+
   return (
     <main className="ml-[70px] flex h-screen flex-col">
-      <Link href="/teams" className="ml-4 mt-3 font-medium text-primary">
-        {"< Back"}
-      </Link>
+      <div className="flex items-center p-2">
+        <Link href="/teams" className="ml-4 mt-3 font-medium text-primary">
+          {"< Back"}
+        </Link>
+        <div className="flex-grow" />
+        <Dialog>
+          <DialogTrigger>
+            <Button>Add Review</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <div className="">
+              <Label htmlFor="innovation">Innovation & Creativity</Label>
+              <Input
+                type="number"
+                id="innovation"
+                value={innovation}
+                onChange={(e) => setInnovation(Number(e.target.value))}
+                className="mt-2"
+              />
+            </div>
+            <div className="">
+              <Label htmlFor="functionality">
+                Functionality & Completeness
+              </Label>
+              <Input
+                type="number"
+                id="functionality"
+                value={functionality}
+                onChange={(e) => setFunctionality(Number(e.target.value))}
+                className="mt-2"
+              />
+            </div>
+            <div className="">
+              <Label htmlFor="design">UI/UX & Design</Label>
+              <Input
+                type="number"
+                id="design"
+                value={design}
+                onChange={(e) => setDesign(Number(e.target.value))}
+                className="mt-2"
+              />
+            </div>
+            <div className="">
+              <Label htmlFor="tech">Technical Implementation</Label>
+              <Input
+                type="number"
+                id="tech"
+                value={tech}
+                onChange={(e) => setTeach(Number(e.target.value))}
+                className="mt-2"
+              />
+            </div>
+            <div className="">
+              <Label htmlFor="presentation">Presentation & Communication</Label>
+              <Input
+                type="number"
+                id="presentation"
+                value={presentation}
+                onChange={(e) => setPresentation(Number(e.target.value))}
+                className="mt-2"
+              />
+            </div>
+            <div className="">
+              <Label htmlFor="author">Author</Label>
+              <Input
+                id="author"
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
+                className="mt-2"
+              />
+            </div>
+            <div className="">
+              <Label htmlFor="comments">Comments</Label>
+              <Textarea
+                id="comments"
+                value={comments}
+                onChange={(e) => setComments(e.target.value)}
+                className="mt-2"
+              />
+            </div>
+            <Button onClick={handleSubmit}>Submit</Button>
+          </DialogContent>
+        </Dialog>
+      </div>
       <Carousel
         opts={{
           align: "start",
@@ -108,11 +243,14 @@ export default function Page() {
         <Card className="mx-4 mt-10 h-4/5 w-1/2 overflow-auto">
           <Tabs defaultValue="idea" className="w-full">
             <TabsList className="w-full">
-              <TabsTrigger className="w-1/2" value="idea">
+              <TabsTrigger className="w-1/3" value="idea">
                 Idea
               </TabsTrigger>
-              <TabsTrigger className="w-1/2" value="project">
+              <TabsTrigger className="w-1/3" value="project">
                 Project
+              </TabsTrigger>
+              <TabsTrigger className="w-1/3" value="reviews">
+                Reviews
               </TabsTrigger>
             </TabsList>
             <TabsContent value="idea" className="p-2">
@@ -168,6 +306,51 @@ export default function Page() {
                 <p className="text-muted-foreground">Others:</p>
                 <p className="ml-1 font-medium">{teamData?.project.others}</p>
               </div> */}
+            </TabsContent>
+            <TabsContent value="reviews" className="p-2">
+              {reviews?.map((review, id) => (
+                <div key={id}>
+                  <p>Review {id + 1}</p>
+                  <div className="flex">
+                    <p className="text-muted-foreground">
+                      Innovation & Creativity:
+                    </p>
+                    <p className="ml-1 font-medium">
+                      {review.innovation_and_creativity}
+                    </p>
+                  </div>
+                  <div className="mt-1 flex">
+                    <p className="text-muted-foreground">
+                      Functionality & Completeness:
+                    </p>
+                    <p className="ml-1 font-medium">
+                      {review.functionality_and_completeness}
+                    </p>
+                  </div>
+                  <div className="mt-1 flex">
+                    <p className="text-muted-foreground">UI/UX & Design:</p>
+                    <p className="ml-1 font-medium">{review.ui_and_design}</p>
+                  </div>
+                  <div className="mt-1 flex">
+                    <p className="text-muted-foreground">
+                      Technical Implementation:
+                    </p>
+                    <p className="ml-1 font-medium">
+                      {review.techincal_implementation}
+                    </p>
+                  </div>
+                  <div className="mt-1 flex">
+                    <p className="text-muted-foreground">
+                      Presentation & Communication:
+                    </p>
+                    <p className="ml-1 font-medium">
+                      {review.presentation_and_communication}
+                    </p>
+                  </div>
+                  <p className="text-muted-foreground">Comments:</p>
+                  <p className="font-medium">{review.comments}</p>
+                </div>
+              ))}
             </TabsContent>
           </Tabs>
         </Card>
