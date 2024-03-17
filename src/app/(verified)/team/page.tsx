@@ -113,6 +113,8 @@ export default function Page() {
                 type="number"
                 id="functionality"
                 value={functionality}
+                max={10}
+                min={0}
                 onChange={(e) => setFunctionality(Number(e.target.value))}
                 className="mt-2"
               />
@@ -123,6 +125,8 @@ export default function Page() {
                 type="number"
                 id="design"
                 value={design}
+                max={10}
+                min={0}
                 onChange={(e) => setDesign(Number(e.target.value))}
                 className="mt-2"
               />
@@ -133,6 +137,8 @@ export default function Page() {
                 type="number"
                 id="tech"
                 value={tech}
+                max={10}
+                min={0}
                 onChange={(e) => setTeach(Number(e.target.value))}
                 className="mt-2"
               />
@@ -143,6 +149,8 @@ export default function Page() {
                 type="number"
                 id="presentation"
                 value={presentation}
+                max={10}
+                min={0}
                 onChange={(e) => setPresentation(Number(e.target.value))}
                 className="mt-2"
               />
@@ -152,6 +160,8 @@ export default function Page() {
               <Input
                 id="author"
                 value={author}
+                min={0}
+                max={10}
                 onChange={(e) => setAuthor(e.target.value)}
                 className="mt-2"
               />
