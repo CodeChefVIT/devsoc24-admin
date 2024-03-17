@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   type ColumnDef,
@@ -15,7 +15,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
+import { usePathname } from "next/navigation";
 import {
   Table,
   TableBody,
@@ -25,7 +25,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DataTablePagination } from "./data-table-pagination";
-import { DataTableToolbar } from "../../app/(verified)/users/data-table-toolbar";
+import { DataTableToolbarUsers } from "../../app/(verified)/users/data-table-toolbar";
+import { DataTableToolbarTeams } from "../../app/(verified)/teams/data-table-toolbar";
+import { DataTableToolbarIdea } from "../../app/(verified)/ideas/data-table-toolbar";
+import { DataTableToolbarProject } from "../../app/(verified)/projects/data-table-toolbar";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -36,9 +39,25 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const pathname = usePathname();
   const [rowSelection, setRowSelection] = useState({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
+
+  useEffect(() => {
+    console.log(pathname);
+  }, [pathname]);
+
+  let DataTableToolbarComponent = null;
+  if (pathname === "/users") {
+    DataTableToolbarComponent = DataTableToolbarUsers;
+  } else if (pathname === "/teams") {
+    DataTableToolbarComponent = DataTableToolbarTeams;
+  } else if (pathname === "/ideas") {
+    DataTableToolbarComponent = DataTableToolbarIdea;
+  } else if (pathname === "/projects") {
+    DataTableToolbarComponent = DataTableToolbarProject;
+  }
 
   const table = useReactTable({
     data,
@@ -68,7 +87,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="ml-[60px] min-h-screen space-y-4 bg-white px-10 py-5">
-      <DataTableToolbar table={table} />
+      {DataTableToolbarComponent && <DataTableToolbarComponent table={table} />}
       <div className="rounded-md border shadow-md">
         <Table className="rounded-md bg-background">
           <TableHeader>

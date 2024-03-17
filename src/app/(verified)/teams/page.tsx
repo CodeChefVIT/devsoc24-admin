@@ -1,5 +1,25 @@
-import React from "react";
+"use client";
+
+import { getAllTeams } from "@/api/teams";
+import React, { useEffect, useState } from "react";
+import { DataTable } from "../../../components/data-table/data-table";
+import { columns } from "./columns";
+import { type Team } from "@/schemas/api";
 
 export default function Page() {
-  return <main className="ml-[70px]"></main>;
+  const [data, setData] = useState<Team[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const temp = await getAllTeams();
+      if (temp) setData(temp);
+    }
+    void fetchData();
+  }, []);
+
+  return (
+    <main className="">
+      <DataTable data={data} columns={columns} />
+    </main>
+  );
 }

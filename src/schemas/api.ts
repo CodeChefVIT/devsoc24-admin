@@ -41,6 +41,7 @@ export interface User {
 }
 
 export interface Team {
+  id: string;
   team_name: string;
   team_code: string;
   leader_id: string;
@@ -63,9 +64,11 @@ export interface Idea {
   github_link: string;
   figma_link: string;
   others: string;
+  is_selected: boolean;
 }
 
 export interface Project {
+  team_id: string;
   name: string;
   description: string;
   track: string;
