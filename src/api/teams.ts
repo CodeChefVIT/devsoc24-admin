@@ -74,7 +74,7 @@ export const addReview = async (
         ui_and_design: uiAndDesign,
         techincal_implementation: technicalImplementation,
         presentation_and_communication: presentationAndCommunication,
-        review_round: 1,
+        review_round: 2,
         comments,
       },
       {
