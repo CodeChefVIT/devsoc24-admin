@@ -26,7 +26,7 @@ export default function Page() {
   }, [currentTitleIndex, titles.length]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-[url('/images/bg.svg')] bg-cover bg-no-repeat">
+    <main className="flex min-h-screen max-h-screen flex-col items-center bg-[url('/images/bg.svg')] bg-cover bg-no-repeat">
       <div className="flex h-[10%] w-full items-center justify-between bg-background px-6 py-2">
         <Logo className="h-9/10 w-auto" />
       </div>
@@ -40,7 +40,7 @@ export default function Page() {
             />
           </CardHeader>
           <div className="mt-3 flex flex-col items-center">
-            <p className="text-2xl font-semibold text-black">Admin Panel</p>
+            <p className="text-2xl font-semibold text-black">Admin Masti</p>
             <p className="mt-1 text-sm">Login to your account</p>
           </div>
           <CardContent className="mt-4">

@@ -48,7 +48,11 @@ export default function Page() {
       const temp2 = await getReview(id);
       if (temp2) setReviews(temp2);
     }
-    void fetchData();
+    void toast.promise(fetchData(), {
+      loading: "Fetching Data...",
+      success: "Fetched Data",
+      error: "Something went wrong!",
+    });
   }, [id]);
 
   const handleSubmit = async () => {
@@ -183,40 +187,26 @@ export default function Page() {
         opts={{
           align: "start",
         }}
-        className="w-full "
+        className="max-w-screen "
       >
-        <CarouselContent>
+        <CarouselContent className="mx-1 flex w-full overflow-auto">
           {teamData?.users.map((userData, id) => (
-            <CarouselItem
+            <Card
+              className="relative mx-2  my-2 flex h-[15vh] w-[30vw] flex-col overflow-auto"
               key={id}
-              className={`basis-[calc(100/${teamData.users.length})%]`}
             >
-              <Card className="mx-4 mt-5 h-fit overflow-auto">
-                <CardHeader className="flex-row gap-5 text-xl font-semibold">
-                  <p>{userData?.name}</p>
-                </CardHeader>
-                <CardContent className="-mt-4 flex flex-col">
-                  <p className="text-muted-foreground">Personal Detais:</p>
-                  <div className="flex gap-10">
-                    <div className="flex">
-                      <p className="mr-1 font-medium">Reg No.:</p>
-                      <p>{userData?.reg_no}</p>
-                    </div>
-                    <div className="flex text-wrap">
-                      <p className="mr-1 font-medium">Email:</p>
-                      <p className="text-wrap">{userData?.email}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </CarouselItem>
+              <CardHeader className="flex-row gap-5 text-xl font-semibold">
+                <p>{userData?.name}</p>
+              </CardHeader>
+              <CardContent className="absolute bottom-0 -mt-4 flex flex-col">
+                <p>Reg No: {userData?.reg_no}</p>
+              </CardContent>
+            </Card>
           ))}
         </CarouselContent>
-        <CarouselNext />
-        <CarouselPrevious />
       </Carousel>
 
-      <div className="flex grow flex-col md:flex-row">
+      <div className="flex grow flex-col md:flex-row ">
         <Card className="mx-4 mt-10 h-4/5 w-1/2 overflow-auto">
           <CardHeader className="text-xl font-semibold">
             Team Details
