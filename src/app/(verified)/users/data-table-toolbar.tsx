@@ -100,7 +100,7 @@ export function DataTableToolbarUsers<TData>({
         <Button
           variant={fresherOnly ? "secondary" : "outline"}
           className="ml-auto flex"
-          onClick={() => setFresherOnly(!femaleOnly)}
+          onClick={() => setFresherOnly(!fresherOnly)}
         >
           {fresherOnly && <CheckIcon size={20} className="mr-2" />} Freshers
           Only
