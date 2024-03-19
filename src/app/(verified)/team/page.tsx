@@ -2,7 +2,7 @@
 
 import { addReview, getReview, getTeam } from "@/api/teams";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Review, type Team } from "@/schemas/api";
+import { type Review, type Team } from "@/schemas/api";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -10,21 +10,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Carousel,
   CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import axios from "axios";
 import toast from "react-hot-toast";
 
 export default function Page() {
@@ -286,8 +281,8 @@ export default function Page() {
               </div>
             </TabsContent>
             <TabsContent value="project" className="p-2">
-              {/* <div className="flex">
-                <p className="text-muted-foreground">Title:</p>
+              <div className="flex">
+                <p className="text-muted-foreground">Name:</p>
                 <p className="ml-1 font-medium">{teamData?.project.name}</p>
               </div>
               <div className="mt-4 flex flex-col">
@@ -299,13 +294,27 @@ export default function Page() {
                 <p className="font-medium">{teamData?.project.track}</p>
               </div>
               <p className="text-muted-foreground">GitHub Link:</p>
-              <p className="ml-1 font-medium">{teamData?.project.github_link}</p>
+              <Link
+                href={teamData?.project.github_link ?? ""}
+                className="ml-1 font-medium"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                {teamData?.idea.github_link}
+              </Link>
               <p className="text-muted-foreground">Figma Link:</p>
-              <p className="font-medium">{teamData?.project.figma_link}</p>
+              <Link
+                href={teamData?.project.figma_link ?? ""}
+                className="font-medium"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                {teamData?.idea.figma_link}
+              </Link>
               <div className="mt-4 flex">
                 <p className="text-muted-foreground">Others:</p>
                 <p className="ml-1 font-medium">{teamData?.project.others}</p>
-              </div> */}
+              </div>
             </TabsContent>
             <TabsContent value="reviews" className="p-2">
               {reviews?.map((review, id) => (

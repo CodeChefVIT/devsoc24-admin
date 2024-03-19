@@ -6,7 +6,7 @@ import { type Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableViewOptions } from "../../../components/data-table/data-table-view-options";
-import { CheckIcon, X } from "lucide-react";
+import { X } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;

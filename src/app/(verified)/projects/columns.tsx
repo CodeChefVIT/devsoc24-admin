@@ -1,6 +1,5 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Tooltip,
   TooltipContent,
@@ -12,14 +11,6 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "../../../components/data-table/data-table-column-header";
 import { type Project } from "@/schemas/api";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
 import { EyeIcon } from "lucide-react";
 
