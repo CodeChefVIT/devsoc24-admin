@@ -1,7 +1,7 @@
 <p align="center"><a href="https://www.codechefvit.com" target="_blank"><img src="https://i.ibb.co/4J9LXxS/cclogo.png" width=160 title="CodeChef-VIT" alt="Codechef-VIT"></a>
 </p>
 
-<h2 align="center"> DEVSOC'24 Portal</h2>
+<h2 align="center"> DEVSOC'24 Admin Portal</h2>
 <br/>
 
 > <p>Welcome to the DEVSOC'24 Admin Portal, your one-stop solution for managing and maintaining your DEVSOC'24 Portal with ease and efficiency. Our powerful and user-friendly admin panel is designed to provide you with all the tools you need to oversee your portal effectively. Our Admin Portal empowers you to take control of your portal effortlessly.</p>
